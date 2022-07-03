@@ -22,7 +22,7 @@ void displayProgramInformation(void)
 	printf("Rows containing no keyword matches will be copied into a special file.\n");
 	printf("To account for case sensitivity include multiple keywords with the expected case variations.\n");
 	printf("Your inputs are limited to 100 characters per input.\n");
-	printf("Keyword(s) can include spaces, but not commas. You can include up to 10 keywords.\n\n");
+	printf("Keyword(s) can include spaces, but not commas.\n\n");
 }
 
 
@@ -35,37 +35,28 @@ void displayProgramInformation(void)
 //   int* numberOfKeywords : the pointer to where to store the number of keywords the user wants
 // RETURNS     : void
 
-void collectAndProcessKeywords(struct keywordTracking* keywords, int* numberOfKeywords)
+void collectAndProcessKeywords(std::vector<struct keywordTracking>& keywords, int* numberOfKeywords)
 {
-	bool validInputFlag = false;
-	std::string numberOfKeywordsS = "";
+	printf("\nWhen you have no more keywords to add press enter without inputting anything and the search will execute.\n");
 
-	// keyword collection and processing
-	// if the number of keywords is invalid then the process restarts
-	while (false == validInputFlag)
+	std::string userInput = "something";
+
+	while (userInput != "")
 	{
-		printf("\nEnter the number of keywords: ");
-		getline(std::cin, numberOfKeywordsS);
-		*numberOfKeywords = std::stoi(numberOfKeywordsS);
+		printf("Enter a keyword: ");
+		getline(std::cin, userInput);
 
-		// check that number of keywords inputted is valid
-		if (*numberOfKeywords >= 1 && *numberOfKeywords <= kMaxKeywords)
+		if (userInput != "")
 		{
-			validInputFlag = true;
-			for (int currentKeyword = 0; currentKeyword < *numberOfKeywords; ++currentKeyword)
-			{
-				printf("Enter a keyword: ");
-				getline(std::cin, (keywords + currentKeyword)->keyword);
-				(keywords + currentKeyword)->searchableKeyword = (keywords + currentKeyword)->keyword;
-				
-				// modify the keyword so it has spaces at the beginning and end
-				(keywords + currentKeyword)->searchableKeyword.insert(0, " ");
-				(keywords + currentKeyword)->searchableKeyword.push_back(' ');
-			}
-		}
-		else
-		{
-			printf("The number of keywords must be between 1 and 10.\n");
+			keywords.push_back({});
+			keywords[*numberOfKeywords].keyword = userInput;
+			keywords[*numberOfKeywords].searchableKeyword = userInput;
+
+			// modify the keyword so it has spaces at the beginning and end
+			keywords[*numberOfKeywords].searchableKeyword.insert(0, " ");
+			keywords[*numberOfKeywords].searchableKeyword.push_back(' ');
+
+			++* numberOfKeywords;
 		}
 	}
 }
@@ -83,7 +74,7 @@ void collectAndProcessKeywords(struct keywordTracking* keywords, int* numberOfKe
 //   std::string& whereToSave : where to save created files
 // RETURNS     : void
 
-void searchFile(struct keywordTracking* keywords, int numberOfKeywords, std::string& fileToSearch, std::string& whereToSave, int* rowsAnalyzed)
+void searchFile(std::vector<struct keywordTracking>& keywords, int numberOfKeywords, std::string& fileToSearch, std::string& whereToSave, int* rowsAnalyzed)
 {
 	FILE* pFileToSearch = NULL;
 
@@ -132,10 +123,10 @@ void searchFile(struct keywordTracking* keywords, int numberOfKeywords, std::str
 			for (int currentKeyword = 0; currentKeyword < numberOfKeywords; ++currentKeyword)
 			{
 				// if a keyword is found then update tracking and send to be appended
-				if (currentLine.find((keywords + currentKeyword)->searchableKeyword) != std::string::npos)
+				if (currentLine.find(keywords[currentKeyword].searchableKeyword) != std::string::npos)
 				{
 					keywordFoundFlag = true;
-					(keywords + currentKeyword)->linesContainingKeyword++;
+					++keywords[currentKeyword].linesContainingKeyword;
 
 					appendKeywordFile(whereToSave, currentLineC, keywords, currentKeyword);
 				}
@@ -169,7 +160,7 @@ void searchFile(struct keywordTracking* keywords, int numberOfKeywords, std::str
 //	 struct keywordTracking* keywords : the pointer to the keyword storage array
 // RETURNS     : void
 
-void appendKeywordFile(std::string& whereToSave, char* whatToAppend, struct keywordTracking* keywords)
+void appendKeywordFile(std::string& whereToSave, char* whatToAppend, std::vector<struct keywordTracking>& keywords)
 {
 	FILE* pNoMatchesFile = NULL;
 	
@@ -206,10 +197,10 @@ void appendKeywordFile(std::string& whereToSave, char* whatToAppend, struct keyw
 //   int currentKeyword : the index of the keyword array containing the keyword that matched
 // RETURNS     : void
 
-void appendKeywordFile(std::string& whereToSave, char* whatToAppend, struct keywordTracking* keywords, int currentKeyword)
+void appendKeywordFile(std::string& whereToSave, char* whatToAppend, std::vector<struct keywordTracking>& keywords, int currentKeyword)
 {
 	FILE* pKeywordFile = NULL;
-	std::string appendedWhereToSave = whereToSave + "\\" + (keywords + currentKeyword)->keyword + ".csv";
+	std::string appendedWhereToSave = whereToSave + "\\" + keywords[currentKeyword].keyword + ".csv";
 
 	fopen_s(&pKeywordFile, appendedWhereToSave.c_str(), "a");
 
@@ -240,22 +231,22 @@ void appendKeywordFile(std::string& whereToSave, char* whatToAppend, struct keyw
 //   int numberOfKeywords : the number of keywords the user designated
 // RETURNS     : void
 
-void displaySearchStatistics(struct keywordTracking* keywords, int numberOfKeywords, int* rowsAnalyzed)
+void displaySearchStatistics(std::vector<struct keywordTracking>& keywords, int numberOfKeywords, int* rowsAnalyzed)
 {
 	printf("\n");
 	for (int currentKeyword = 0; currentKeyword < numberOfKeywords; ++currentKeyword)
 	{
-		if (1 == (keywords + currentKeyword)->linesContainingKeyword)
+		if (1 == keywords[currentKeyword].linesContainingKeyword)
 		{
-			printf("The '%s' keyword was found in %d row of the file searched.\n", (keywords + currentKeyword)->keyword.c_str(), (keywords + currentKeyword)->linesContainingKeyword);
+			printf("The '%s' keyword was found in %d row of the file searched.\n", keywords[currentKeyword].keyword.c_str(), keywords[currentKeyword].linesContainingKeyword);
 		}
-		else if (0 == (keywords + currentKeyword)->linesContainingKeyword)
+		else if (0 == keywords[currentKeyword].linesContainingKeyword)
 		{
-			printf("The '%s' keyword was not found in the file searched.\n", (keywords + currentKeyword)->keyword.c_str());
+			printf("The '%s' keyword was not found in the file searched.\n", keywords[currentKeyword].keyword.c_str());
 		}
 		else
 		{
-			printf("The '%s' keyword was found in %d rows of the file searched.\n", (keywords + currentKeyword)->keyword.c_str(), (keywords + currentKeyword)->linesContainingKeyword);
+			printf("The '%s' keyword was found in %d rows of the file searched.\n", keywords[currentKeyword].keyword.c_str(), keywords[currentKeyword].linesContainingKeyword);
 		}
 	}
 	

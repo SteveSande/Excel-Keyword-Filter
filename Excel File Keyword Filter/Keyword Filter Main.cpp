@@ -25,7 +25,9 @@ int main(void)
 	getline(std::cin, whereToSave);
 
 	// variables for keyword tracking
-	struct keywordTracking keywords[kMaxKeywords - 1] = {"", "", 0};
+	std::vector<struct keywordTracking> keywords;
+	std::vector<struct keywordTracking>::iterator keywordsIter = keywords.begin();
+	// struct keywordTracking keywords[kMaxKeywords - 1] = {"", "", 0};
 	int numberOfKeywords = 0;
 	int rowsAnalyzed = -1;
 

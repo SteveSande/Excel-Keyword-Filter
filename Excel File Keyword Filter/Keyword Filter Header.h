@@ -10,13 +10,14 @@
 #include "string.h"
 #include <iostream>
 #include <string>
+#include <vector>
 
 void displayProgramInformation(void);
-void collectAndProcessKeywords(struct keywordTracking* keywords, int* numberOfKeywords);
-void searchFile(struct keywordTracking* keywords, int numberOfKeywords, std::string& fileToSearch, std::string& whereToSave, int* rowsAnalyzed);
-void appendKeywordFile(std::string& whereToSave, char* whatToAppend, struct keywordTracking* keywords);
-void appendKeywordFile(std::string& whereToSave, char* whatToAppend, struct keywordTracking* keywords, int currentKeyword);
-void displaySearchStatistics(struct keywordTracking* keywords, int numberOfKeywords, int* rowsAnalyzed);
+void collectAndProcessKeywords(std::vector<struct keywordTracking>& keywords, int* numberOfKeywords);
+void searchFile(std::vector<struct keywordTracking>& keywords, int numberOfKeywords, std::string& fileToSearch, std::string& whereToSave, int* rowsAnalyzed);
+void appendKeywordFile(std::string& whereToSave, char* whatToAppend, std::vector<struct keywordTracking>& keywords);
+void appendKeywordFile(std::string& whereToSave, char* whatToAppend, std::vector<struct keywordTracking>& keywords, int currentKeyword);
+void displaySearchStatistics(std::vector<struct keywordTracking>& keywords, int numberOfKeywords, int* rowsAnalyzed);
 
 const int kMaxStringLength = 100;
 const int kMaxKeywords = 10;
