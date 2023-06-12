@@ -16,7 +16,7 @@
 
 void displayProgramInformation(void)
 {
-	printf("This program searches an CSV file for rows containing custom keyword(s).\n");
+	printf("This program searches a CSV file for rows containing custom keyword(s).\n");
 	printf("New CSV files will be created that are named after the keyword(s).\n");
 	printf("Rows containing an exact case-sensitive keyword match will be copied into their respective file.\n");
 	printf("Rows containing no keyword matches will be copied into a special file.\n");
