@@ -1,7 +1,7 @@
 Excel Keyword Filter
 By Steve Sande
 
-This program searches a CSV file for rows containing custom keyword(s)
+This program searches a CSV file for rows containing custom keyword(s).
 It was written as an independent learning exercise.
 
 New CSV files will be created that are named after the keyword(s).
