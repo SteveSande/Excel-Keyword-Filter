@@ -14,8 +14,8 @@ Keyword(s) can include spaces, but not commas.
 To use:
 Navigate to x64 and then Release.
 Run "Excel File Keyword Filter.exe".
-Enter "<yourpath>\Excel-Keyword-Filter\Test Files\test.csv".
-Enter "<yourpath>\Excel-Keyword-Filter\Test Files".
+Enter "&#60;yourpath&#62;\Excel-Keyword-Filter\Test Files\test.csv".
+Enter "&#60;yourpath&#62;\Excel-Keyword-Filter\Test Files".
 Enter "Guelph".
 Enter "fish".
 Enter nothing.
