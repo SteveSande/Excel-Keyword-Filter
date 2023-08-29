@@ -1,4 +1,4 @@
-#Excel Keyword Filter#
+<h1>Excel Keyword Filter</h1>
 
 This program searches a CSV file for rows containing custom keyword(s).
 It was written as an independent learning exercise.
@@ -10,12 +10,12 @@ To account for case sensitivity include multiple keywords with the expected case
 Your inputs are limited to 100 characters per input.
 Keyword(s) can include spaces, but not commas.
 
-To use enter these commands in command prompt:
+To test it enter these commands in command prompt:
 1. git clone https://github.com/SteveSande/Excel-Keyword-Filter.git
 2. cd Excel-Keyword-Filter
 2. ExcelFileKeywordFilter.exe
 3. .\Test Files\test.csv
-4. .\Excel-Keyword-Filter\Test Files
+4. .\Test Files
 5. Guelph
 6. fish
 7. Just press enter (no input).
