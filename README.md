@@ -1,5 +1,4 @@
-Excel Keyword Filter
-By Steve Sande
+#Excel Keyword Filter#
 
 This program searches a CSV file for rows containing custom keyword(s).
 It was written as an independent learning exercise.
