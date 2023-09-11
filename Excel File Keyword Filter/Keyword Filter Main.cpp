@@ -36,4 +36,7 @@ int main(void)
 	searchFile(keywords, numberOfKeywords, fileToSearch, whereToSave, &rowsAnalyzed);
 
 	displaySearchStatistics(keywords, numberOfKeywords, &rowsAnalyzed);
+
+	printf("\nPress ENTER to exit.\n");
+	getchar();
 }
